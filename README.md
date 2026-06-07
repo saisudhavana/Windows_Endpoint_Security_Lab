@@ -41,11 +41,13 @@ Opened ProcDump folder and executed ProcDump using administrator CMD. The comman
 
 ## Sysmon Logs During Attack Simulation
 During ProcDump execution, Sysmon captured multiple events. Event ID 1 logs process creation showing ProcDump execution. Event ID 10 logs process access showing ProcDump accessing LSASS memory. Event ID 11 logs file creation showing the creation of lsass_dump.dmp file on disk.  
-IMAGE: Event ID 1, 10, 11 logs
+
 Process Creation :
 ![image alt](https://github.com/saisudhavana/Windows_Endpoint_Security_Lab/blob/8fae532bc0224f30894021e8000cc60a9be06cee/Screenshots/procdumpprocesscreation-eventid-1.png)
+
 Process Access :
 ![image alt](https://github.com/saisudhavana/Windows_Endpoint_Security_Lab/blob/8fae532bc0224f30894021e8000cc60a9be06cee/Screenshots/ProcessAcess.png)
+
 File Creation:
 ![image alt](https://github.com/saisudhavana/Windows_Endpoint_Security_Lab/blob/8fae532bc0224f30894021e8000cc60a9be06cee/Screenshots/FileCreated.png)
 
