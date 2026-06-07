@@ -13,9 +13,12 @@ Installed VirtualBox, downloaded Windows ISO, and created a Windows virtual mach
 Sysmon (System Monitor) is a Windows Sysinternals tool used for monitoring system activity like process creation, process access, file creation, and registry changes.
 
 Downloaded Sysmon from Microsoft Sysinternals suite and extracted the ZIP file. Also downloaded Sysmon configuration file from GitHub (SwiftOnSecurity community config). This config file defines what Sysmon should log and reduces noise by focusing only on important events like Event ID 1 (Process Creation), Event ID 10 (Process Access), and Event ID 11 (File Creation).  
-IMAGE: Sysmon download and config file screenshot
+![image alt](https://github.com/saisudhavana/Windows_Endpoint_Security_Lab/blob/157c6363068fd7420457eac668331ea4a3faffd6/Screenshots/SysmonDownload.png)
 
-Opened Command Prompt as Administrator and navigated to Sysmon folder using: cd C:\Users\<User>\Downloads\Sysmon. Installed Sysmon using the command Sysmon64.exe -i SysmonConfig.xml. Here Sysmon64.exe installs Sysmon as a service and SysmonConfig.xml defines monitoring rules.  
+![image alt](https://github.com/saisudhavana/Windows_Endpoint_Security_Lab/blob/157c6363068fd7420457eac668331ea4a3faffd6/Screenshots/sysmonzipfile.png)
+
+Opened Command Prompt as Administrator and navigated to Sysmon folder using: cd C:\Users\<User>\Downloads\Sysmon. Installed Sysmon using the command Sysmon64.exe -i SysmonConfig.xml. Here Sysmon64.exe installs Sysmon as a service and SysmonConfig.xml defines monitoring rules. 
+![image alt]()
 IMAGE: Sysmon installation command execution
 
 After installation, Sysmon logs are verified in Event Viewer under Applications and Services Logs → Microsoft → Windows → Sysmon → Operational. Event ID 1 shows process creation, Event ID 10 shows process access, and Event ID 11 shows file creation events.  
