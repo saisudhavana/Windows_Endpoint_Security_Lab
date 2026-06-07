@@ -74,5 +74,34 @@ T1003 – OS Credential Dumping (LSASS Memory)
 T1055 – Process Memory Access  
 T1070 – Indicator of Activity via Logs  
 
+
+Incident Response, Containment & Remediation PlaybookTactic: Containment, Eradication, and Recovery (NIST SP 800-61 Phase 3 & 4)Once Sysmon Event ID 10 triggers a high-fidelity alert for unauthorized access to lsass.exe, the following structured containment and eradication playbook must be initiated immediately:1. Immediate Host Isolation (Containment)Action: Issue an isolation command via the Endpoint Detection and Response (EDR) console (or disconnect the network adapter inside VirtualBox/Switch configurations).Why: The moment an attacker dumps the memory, they will attempt to exfiltrate the .dmp file over the network to their own machine. Isolating the host immediately cuts off their outbound communication channel and prevents lateral movement.2. Process Termination & Artifact Eradication (Eradication)Action: Forcefully terminate the parent process that initiated the dump (e.g., the specific compromised cmd.exe or powershell.exe instance found in Sysmon Event ID 1).Action: Locate and permanently purge the memory dump file from the hard drive (e.g., deleting lsass_dump.dmp).Action: Scan memory structures to ensure no residual malicious injection hooks or secondary threads are left running inside legitimate background processes.3. Identity Invalidation & Session Revocation (Recovery)Action: Because the NTLM hashes and Kerberos tickets inside that memory dump must now be treated as fully compromised, all user accounts logged into that specific machine must undergo an immediate forced password reset.Action: Revoke all active authentication tokens, active Azure AD / M365 session cookies, and Kerberos Ticket Granting Tickets (TGTs) globally across the domain. This breaks any active Pass-the-Hash or replay setups the attacker might try offline.4. Host Hardening & Post-Incident ActivityAction: Audit the system configuration to find out why the dump was allowed to happen.Action: Re-enforce Protected Process Light (PPL) for LSASS by ensuring the registry key RunAsPPL is set to 1 under the LSA control panel.Action: Verify that Windows Defender Credential Guard is fully enabled via Group Policy to prevent standard administrative memory handle requests from succeeding in the future.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## 🛡️ Incident Response, Containment & Eradication Playbook
+Operational Framework: NIST SP 800-61 Rev. 2 (Containment, Eradication, and Recovery)
+Once a high-fidelity behavioral signature triggers for unauthorized memory access to lsass.exe via Sysmon Event ID 10, the SOC team must immediately initiate the following structured playbooks to disrupt the threat actor's objective:
+## Immediate Network Isolation (Host Containment)
+
+* Action: Issue a host isolation command via the active Endpoint Detection and Response (EDR) dashboard or forcefully disconnect the network adapter configuration.
+* Objective: Sever active outbound network sessions to completely block the attacker's data exfiltration pipeline. This prevents them from transferring the raw .dmp container to an offline environment for decryption.
+
+## Process Termination & Artifact Purging (Eradication)
+
+* Action: Trace the process ancestry tree via Sysmon Event ID 1 and forcefully terminate the parent binary hierarchy responsible for spawning the dump tool (e.g., the specific compromised cmd.exe or powershell.exe thread context).
+* Action: Locate the exact filesystem location captured by Sysmon Event ID 11 and permanently purge the .dmp or .dat dump file from the hard drive layer.
+
+## Identity Invalidation & Token Revocation (Recovery)
+
+* Action: Treat all user accounts, active domain credentials, and administrative profiles cached or active on that endpoint as fully compromised. Enforce an immediate mandatory password reset across the domain.
+* Action: Globally revoke all active authentication cookies, active M365/Azure AD session tokens, and active Kerberos Ticket Granting Tickets (TGTs) to completely disrupt offline Pass-the-Hash (MITRE T1550.002) or credential replay operations.
+
+## Defensive Baselining & System Hardening (Post-Incident Review)
+
+* Action: Conduct a configuration audit to identify why baseline guardrails failed. Re-enable Protected Process Light (PPL) by modifying the Windows Registry value RunAsPPL to 1 under HKLM\SYSTEM\CurrentControlSet\Control\Lsa.
+* Action: Enforce group policy objects (GPOs) to validate that Windows Defender Credential Guard and Virtualization-Based Security (VBS) metrics are live across the subnet scope to prevent future user-mode memory handle attachments.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 ## Conclusion
 This lab demonstrates how credential dumping works in Windows environments and how Sysmon provides visibility into such activities. It shows how attackers extract credentials from LSASS memory and how defenders can detect and analyze these events using Windows logs and forensic tools.
