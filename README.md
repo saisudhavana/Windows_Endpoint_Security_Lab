@@ -7,7 +7,7 @@ This project demonstrates Windows endpoint security monitoring and credential du
 
 ## VirtualBox & Windows Setup
 Installed VirtualBox, downloaded Windows ISO, and created a Windows virtual machine by allocating CPU, RAM, and storage. The Windows OS was installed successfully inside the VM using the ISO file.  
-IMAGE: VirtualBox Windows VM setup screenshot
+![image alt](https://github.com/saisudhavana/Windows_Endpoint_Security_Lab/blob/c62d3b769249dfe2d9ff6cede58f4fb17a69c1c7/Screenshots/Windows_VM.png)
 
 ## Sysmon Installation & Setup
 Sysmon (System Monitor) is a Windows Sysinternals tool used for monitoring system activity like process creation, process access, file creation, and registry changes.
